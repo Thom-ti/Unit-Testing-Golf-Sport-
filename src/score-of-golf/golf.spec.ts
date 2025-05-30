@@ -4,6 +4,7 @@ import {
   scoreBoard,
   scoreOfHole,
   ScoreReport,
+  summary,
   totalScore,
 } from './golf';
 
@@ -249,36 +250,38 @@ describe('scoreOfHole()', () => {
 });
 
 describe('saveScore()', () => {
-  it('ต้องเก็บคะแนนได้', () => {
-    // Arrange
-    const scoreReport: ScoreReport = {
-      score: 1,
-      message: 'Bogey',
-    };
-    const scores = [2, 1, -3, 0];
-    const expectedResult = [2, 1, -3, 0, 1];
+  describe('บันทึกคะแนน', () => {
+    it('ต้องเก็บคะแนนได้', () => {
+      // Arrange
+      const scoreReport: ScoreReport = {
+        score: 1,
+        message: 'Bogey',
+      };
+      const scores = [2, 1, -3, 0];
+      const expectedResult = [2, 1, -3, 0, 1];
 
-    // Act
-    const result = saveScore(scoreReport, scores);
+      // Act
+      const result = saveScore(scoreReport, scores);
 
-    // Assert
-    expect(result).toStrictEqual(expectedResult);
-  });
+      // Assert
+      expect(result).toStrictEqual(expectedResult);
+    });
 
-  it('เก็บคะแนนหลุมแรกได้', () => {
-    // Arrange
-    const scoreReport: ScoreReport = {
-      score: 0,
-      message: 'Par',
-    };
-    const scores = [];
-    const expectedResult = [0];
+    it('เก็บคะแนนหลุมแรกได้', () => {
+      // Arrange
+      const scoreReport: ScoreReport = {
+        score: 0,
+        message: 'Par',
+      };
+      const scores = [];
+      const expectedResult = [0];
 
-    // Act
-    const result = saveScore(scoreReport, scores);
+      // Act
+      const result = saveScore(scoreReport, scores);
 
-    // Assert
-    expect(result).toStrictEqual(expectedResult);
+      // Assert
+      expect(result).toStrictEqual(expectedResult);
+    });
   });
 
   describe('Alternative Cases', () => {
@@ -385,7 +388,9 @@ describe('totalScore()', () => {
       // Assert
       expect(result).toBe(expectedResult);
     });
+  });
 
+  describe('Alternative Cases', () => {
     it('ต้องได้ "Score must be integer number and possible lowest value is -4" เมื่อ scores มีค่าไม่เป็นจํานวนเต็ม หรือมีค่าน้อยกว่า -4', () => {
       // Arrange
       const scores = [-6, 1.5, 3, 0, -1];
@@ -402,88 +407,185 @@ describe('totalScore()', () => {
 });
 
 describe('scoreBoard()', () => {
-  it('ต้องเรียงรายชื่อผู้เล่นตามคะแนน จากน้อยไปมาก', () => {
-    // Arrange
-    const players: PlayerScore[] = [
-      { player: 'Win', totalScore: 2 },
-      { player: 'Meng', totalScore: -1 },
-      { player: 'Big', totalScore: 0 },
-      { player: 'Faris', totalScore: -1 },
-    ];
-    const expectedResult = [
-      { player: 'Meng', totalScore: -1 },
-      { player: 'Faris', totalScore: -1 },
-      { player: 'Big', totalScore: 0 },
-      { player: 'Win', totalScore: 2 },
-    ];
+  describe('จัดอันดับคะแนน', () => {
+    it('ต้องเรียงรายชื่อผู้เล่นตามคะแนน จากน้อยไปมาก', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Win', totalScore: 2 },
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Big', totalScore: 0 },
+        { player: 'Faris', totalScore: -1 },
+      ];
+      const expectedResult = [
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Faris', totalScore: -1 },
+        { player: 'Big', totalScore: 0 },
+        { player: 'Win', totalScore: 2 },
+      ];
 
-    // Act
-    const result = scoreBoard(players);
+      // Act
+      const result = scoreBoard(players);
 
-    // Assert
-    expect(result).toEqual(expectedResult);
+      // Assert
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('ต้องเรียงรายชื่อผู้เล่นตามเดิม ถ้าคะแนนเรียงจากน้อยไปมากอยู่ก่อนแล้ว', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Win', totalScore: -2 },
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Big', totalScore: 0 },
+        { player: 'Faris', totalScore: 1 },
+      ];
+      const expectedResult = [
+        { player: 'Win', totalScore: -2 },
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Big', totalScore: 0 },
+        { player: 'Faris', totalScore: 1 },
+      ];
+
+      // Act
+      const result = scoreBoard(players);
+
+      // Assert
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('ต้องเรียงรายชื่อผู้เล่นตามเดิม ถ้าทุกคนมีคะแนนเท่ากันหมด', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Win', totalScore: 2 },
+        { player: 'Meng', totalScore: 2 },
+        { player: 'Big', totalScore: 2 },
+        { player: 'Faris', totalScore: 2 },
+      ];
+      const expectedResult = [
+        { player: 'Win', totalScore: 2 },
+        { player: 'Meng', totalScore: 2 },
+        { player: 'Big', totalScore: 2 },
+        { player: 'Faris', totalScore: 2 },
+      ];
+
+      // Act
+      const result = scoreBoard(players);
+
+      // Assert
+      expect(result).toEqual(expectedResult);
+    });
   });
 
-  it('ต้องเรียงรายชื่อผู้เล่นตามเดิม ถ้าคะแนนเรียงจากน้อยไปมากอยู่ก่อนแล้ว', () => {
-    // Arrange
-    const players: PlayerScore[] = [
-      { player: 'Win', totalScore: -2 },
-      { player: 'Meng', totalScore: -1 },
-      { player: 'Big', totalScore: 0 },
-      { player: 'Faris', totalScore: 1 },
-    ];
-    const expectedResult = [
-      { player: 'Win', totalScore: -2 },
-      { player: 'Meng', totalScore: -1 },
-      { player: 'Big', totalScore: 0 },
-      { player: 'Faris', totalScore: 1 },
-    ];
+  describe('Alternative Cases', () => {
+    it('ต้องได้ "Invalid number in totalScore property" ถ้า totalScore ไม่เป็นจำนวนเต็ม', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Win', totalScore: 2 },
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Big', totalScore: 0.5 },
+        { player: 'Faris', totalScore: -1 },
+      ];
+      const expectedResult = 'Invalid number in totalScore property';
 
-    // Act
-    const result = scoreBoard(players);
+      // Act
+      const result = scoreBoard(players);
 
-    // Assert
-    expect(result).toEqual(expectedResult);
-  });
-
-  it('ต้องเรียงรายชื่อผู้เล่นตามเดิม ถ้าทุกคนมีคะแนนเท่ากันหมด', () => {
-    // Arrange
-    const players: PlayerScore[] = [
-      { player: 'Win', totalScore: 2 },
-      { player: 'Meng', totalScore: 2 },
-      { player: 'Big', totalScore: 2 },
-      { player: 'Faris', totalScore: 2 },
-    ];
-    const expectedResult = [
-      { player: 'Win', totalScore: 2 },
-      { player: 'Meng', totalScore: 2 },
-      { player: 'Big', totalScore: 2 },
-      { player: 'Faris', totalScore: 2 },
-    ];
-
-    // Act
-    const result = scoreBoard(players);
-
-    // Assert
-    expect(result).toEqual(expectedResult);
-  });
-
-  it('ต้องได้ "Invalid number in totalScore property" ถ้า totalScore ไม่เป็นจำนวนเต็ม', () => {
-    // Arrange
-    const players: PlayerScore[] = [
-      { player: 'Win', totalScore: 2 },
-      { player: 'Meng', totalScore: -1 },
-      { player: 'Big', totalScore: 0.5 },
-      { player: 'Faris', totalScore: -1 },
-    ];
-    const expectedResult = 'Invalid number in totalScore property';
-
-    // Act
-    const result = scoreBoard(players);
-
-    // Assert
-    expect(result).toBe(expectedResult);
+      // Assert
+      expect(result).toBe(expectedResult);
+    });
   });
 });
 
-describe('summary()', () => {});
+describe('summary()', () => {
+  describe('สรุปผล', () => {
+    it('ต้องได้ชื่อผู้ชนะ ถ้าคะแนนเรียงจากน้อยไปมาก และมีผู้ชนะคนเดียว', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Faris', totalScore: 0 },
+        { player: 'Big', totalScore: 0 },
+        { player: 'Win', totalScore: 2 },
+      ];
+
+      const expectedResult = ['Meng'];
+
+      // Act
+      const result = summary(players);
+
+      // Assert
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it('ต้องได้รายชื่อผู้ชนะ ถ้าคะแนนเรียงจากน้อยไปมาก และมีผู้ชนะมากกว่า 1 คน', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Faris', totalScore: -1 },
+        { player: 'Big', totalScore: 0 },
+        { player: 'Win', totalScore: 2 },
+      ];
+
+      const expectedResult = ['Meng', 'Faris'];
+
+      // Act
+      const result = summary(players);
+
+      // Assert
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it('ต้องได้ชื่อหรือรายชื่อผู้ชนะ ถ้าคะแนนไม่ได้เรียง', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Win', totalScore: 2 },
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Big', totalScore: 0 },
+        { player: 'Faris', totalScore: -1 },
+      ];
+
+      const expectedResult = ['Meng', 'Faris'];
+
+      // Act
+      const result = summary(players);
+
+      // Assert
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it('ต้องได้รายชื่อทุกคนเป็นผู้ชนะ ถ้าทุกคนมีคะแนนเท่ากัน', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Win', totalScore: -1 },
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Big', totalScore: -1 },
+        { player: 'Faris', totalScore: -1 },
+      ];
+
+      const expectedResult = ['Win', 'Meng', 'Big', 'Faris'];
+
+      // Act
+      const result = summary(players);
+
+      // Assert
+      expect(result).toStrictEqual(expectedResult);
+    });
+  });
+
+  describe('Alternative Cases', () => {
+    it('ต้องได้ "Invalid number in totalScore property" ถ้า totalScore ไม่เป็นจำนวนเต็ม', () => {
+      // Arrange
+      const players: PlayerScore[] = [
+        { player: 'Win', totalScore: 2 },
+        { player: 'Meng', totalScore: -1 },
+        { player: 'Big', totalScore: 0.5 },
+        { player: 'Faris', totalScore: -1 },
+      ];
+      const expectedResult = 'Invalid number in totalScore property';
+
+      // Act
+      const result = summary(players);
+
+      // Assert
+      expect(result).toBe(expectedResult);
+    });
+  });
+});
