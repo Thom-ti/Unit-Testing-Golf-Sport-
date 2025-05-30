@@ -424,6 +424,50 @@ describe('scoreBoard()', () => {
     expect(result).toEqual(expectedResult);
   });
 
+  it('ต้องเรียงรายชื่อผู้เล่นตามเดิม ถ้าคะแนนเรียงจากน้อยไปมากอยู่ก่อนแล้ว', () => {
+    // Arrange
+    const players: PlayerScore[] = [
+      { player: 'Win', totalScore: -2 },
+      { player: 'Meng', totalScore: -1 },
+      { player: 'Big', totalScore: 0 },
+      { player: 'Faris', totalScore: 1 },
+    ];
+    const expectedResult = [
+      { player: 'Win', totalScore: -2 },
+      { player: 'Meng', totalScore: -1 },
+      { player: 'Big', totalScore: 0 },
+      { player: 'Faris', totalScore: 1 },
+    ];
+
+    // Act
+    const result = scoreBoard(players);
+
+    // Assert
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('ต้องเรียงรายชื่อผู้เล่นตามเดิม ถ้าทุกคนมีคะแนนเท่ากันหมด', () => {
+    // Arrange
+    const players: PlayerScore[] = [
+      { player: 'Win', totalScore: 2 },
+      { player: 'Meng', totalScore: 2 },
+      { player: 'Big', totalScore: 2 },
+      { player: 'Faris', totalScore: 2 },
+    ];
+    const expectedResult = [
+      { player: 'Win', totalScore: 2 },
+      { player: 'Meng', totalScore: 2 },
+      { player: 'Big', totalScore: 2 },
+      { player: 'Faris', totalScore: 2 },
+    ];
+
+    // Act
+    const result = scoreBoard(players);
+
+    // Assert
+    expect(result).toEqual(expectedResult);
+  });
+
   it('ต้องได้ "Invalid number in totalScore property" ถ้า totalScore ไม่เป็นจำนวนเต็ม', () => {
     // Arrange
     const players: PlayerScore[] = [
