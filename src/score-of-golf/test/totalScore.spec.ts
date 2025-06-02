@@ -40,17 +40,14 @@ describe('totalScore()', () => {
   });
 
   describe('Alternative Cases', () => {
-    it('ต้องได้ "Score must be integer number and possible lowest value is -4" เมื่อ scores มีค่าไม่เป็นจํานวนเต็ม หรือมีค่าน้อยกว่า -4', () => {
+    it('ต้องได้ Error "Score must be integer number and possible lowest value is -4" เมื่อ scores มีค่าไม่เป็นจํานวนเต็ม หรือมีค่าน้อยกว่า -4', () => {
       // Arrange
       const scores = [-6, 1.5, 3, 0, -1];
-      const expectedResult =
-        'Score must be integer number and possible lowest value is -4';
 
-      // Act
-      const result = totalScore(scores);
-
-      // Assert
-      expect(result).toBe(expectedResult);
+      // Act & Assert
+      expect(() => totalScore(scores)).toThrow(
+        'Score must be integer number and possible lowest value is -4',
+      );
     });
   });
 });

@@ -77,7 +77,7 @@ describe('summary()', () => {
   });
 
   describe('Alternative Cases', () => {
-    it('ต้องได้ "Invalid number in totalScore property" ถ้า totalScore ไม่เป็นจำนวนเต็ม', () => {
+    it('ต้องได้ Error "Invalid number in totalScore property" ถ้า totalScore ไม่เป็นจำนวนเต็ม', () => {
       // Arrange
       const players: PlayerScore[] = [
         { player: 'Win', totalScore: 2 },
@@ -85,13 +85,11 @@ describe('summary()', () => {
         { player: 'Big', totalScore: 0.5 },
         { player: 'Faris', totalScore: -1 },
       ];
-      const expectedResult = 'Invalid number in totalScore property';
 
-      // Act
-      const result = summary(players);
-
-      // Assert
-      expect(result).toBe(expectedResult);
+      // Act & Assert
+      expect(() => summary(players)).toThrow(
+        'Invalid number in totalScore property',
+      );
     });
   });
 });

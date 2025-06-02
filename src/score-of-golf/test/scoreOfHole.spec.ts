@@ -166,76 +166,66 @@ describe('scoreOfHole()', () => {
 
   describe('Alternative Cases', () => {
     describe('Check Strokes', () => {
-      it("ต้องได้ 'Invalid number of strokes' เมื่อจำนวน strokes ไม่เป็นจำนวนเต็มบวก", () => {
+      it("ต้องได้ Error 'Invalid number of strokes' เมื่อจำนวน strokes ไม่เป็นจำนวนเต็มบวก", () => {
         // Arrange
         const par = 4;
         const strokes = 0;
-        const expectedResult = 'Invalid number of strokes';
 
-        // Act
-        const result = scoreOfHole(par, strokes);
-
-        // Assert
-        expect(result).toBe(expectedResult);
+        // Act & Assert
+        expect(() => scoreOfHole(par, strokes)).toThrow(
+          'Invalid number of strokes',
+        );
       });
     });
 
     describe('Check Par', () => {
-      it("ต้องได้ 'Invalid number of par' เมื่อจำนวน par ไม่เป็นจำนวนเต็มบวก", () => {
+      it("ต้องได้ Error 'Invalid number of par' เมื่อจำนวน par ไม่เป็นจำนวนเต็มบวก", () => {
         // Arrange
         const par = -1.2;
         const strokes = 4;
-        const expectedResult = 'Invalid number of par';
 
-        // Act
-        const result = scoreOfHole(par, strokes);
-
-        // Assert
-        expect(result).toBe(expectedResult);
+        // Act & Assert
+        expect(() => scoreOfHole(par, strokes)).toThrow(
+          'Invalid number of par',
+        );
       });
 
-      it("ต้องได้ 'Par must be at least 3' เมื่อจำนวน par น้อยกว่า 3", () => {
+      it("ต้องได้ Error 'Par must be at least 3' เมื่อจำนวน par น้อยกว่า 3", () => {
         // Arrange
         const par = 1;
         const strokes = 2;
-        const expectedResult = 'Par must be at least 3';
 
-        // Act
-        const result = scoreOfHole(par, strokes);
-
-        // Assert
-        expect(result).toBe(expectedResult);
+        // Act & Assert
+        expect(() => scoreOfHole(par, strokes)).toThrow(
+          'Par must be at least 3',
+        );
       });
     });
 
     describe('Check Score', () => {
       describe('ถ้า par = 3,4,5 จะมี Min Score = -2', () => {
-        it('ต้องได้ "Invalid number of score" เมื่อจำนวน score น้อยกว่า -2', () => {
+        it('ต้องได้ Error "Invalid number of score" เมื่อจำนวน score น้อยกว่า -2', () => {
           // Arrange
           const par = 5;
           const strokes = 1;
-          const expectedResult = 'Invalid number of score';
 
-          // Act
-          const result = scoreOfHole(par, strokes);
-
-          // Assert
-          expect(result).toBe(expectedResult);
+          // Act & Assert
+          expect(() => scoreOfHole(par, strokes)).toThrow(
+            'Invalid number of score',
+          );
         });
       });
 
       describe('ถ้า par >= 6 จะมี Min Score = -3', () => {
-        it('ต้องได้ "Invalid number of score" เมื่อจำนวน score น้อยกว่า -3', () => {
+        it('ต้องได้ Error "Invalid number of score" เมื่อจำนวน score น้อยกว่า -3', () => {
           // Arrange
           const par = 7;
           const strokes = 2;
-          const expectedResult = 'Invalid number of score';
 
-          // Act
-          const result = scoreOfHole(par, strokes);
-
-          // Assert
-          expect(result).toBe(expectedResult);
+          // Act & Assert
+          expect(() => scoreOfHole(par, strokes)).toThrow(
+            'Invalid number of score',
+          );
         });
       });
     });

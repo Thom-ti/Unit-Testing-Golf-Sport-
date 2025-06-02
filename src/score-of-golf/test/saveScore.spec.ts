@@ -37,68 +37,60 @@ describe('saveScore()', () => {
   });
 
   describe('Alternative Cases', () => {
-    it('ต้องได้ "Invalid number in score property" ถ้า scoreReport.score ไม่เป็นจำนวนเต็ม', () => {
+    it('ต้องได้ Error "Invalid number in score property" ถ้า scoreReport.score ไม่เป็นจำนวนเต็ม', () => {
       // Arrange
       const scoreReport: ScoreReport = {
         score: -3.5,
         message: 'Albatross',
       };
       const scores = [2, 1, -3, 0];
-      const expectedResult = 'Invalid number in score property';
 
-      // Act
-      const result = saveScore(scoreReport, scores);
-
-      // Assert
-      expect(result).toBe(expectedResult);
+      // Act & Assert
+      expect(() => saveScore(scoreReport, scores)).toThrow(
+        'Invalid number in score property',
+      );
     });
 
-    it('ต้องได้ "Invalid number in score property" ถ้า scoreReport.score น้อยกว่า -3', () => {
+    it('ต้องได้ Error "Invalid number in score property" ถ้า scoreReport.score น้อยกว่า -3', () => {
       // Arrange
       const scoreReport: ScoreReport = {
         score: -4,
         message: 'Something',
       };
       const scores = [2, 1, -3, 0];
-      const expectedResult = 'Invalid number in score property';
 
-      // Act
-      const result = saveScore(scoreReport, scores);
-
-      // Assert
-      expect(result).toBe(expectedResult);
+      // Act & Assert
+      expect(() => saveScore(scoreReport, scores)).toThrow(
+        'Invalid number in score property',
+      );
     });
 
-    it('ต้องได้ "Invalid number in scores" ถ้ามีค่าใน scores ไม่เป็นจำนวนเต็ม', () => {
+    it('ต้องได้ Error "Invalid number in scores" ถ้ามีค่าใน scores ไม่เป็นจำนวนเต็ม', () => {
       // Arrange
       const scoreReport: ScoreReport = {
         score: 3,
         message: 'Triple Bogey',
       };
       const scores = [2.5, 2, 0, 1, -3.75];
-      const expectedResult = 'Invalid number in scores';
 
-      // Act
-      const result = saveScore(scoreReport, scores);
-
-      // Assert
-      expect(result).toBe(expectedResult);
+      // Act & Assert
+      expect(() => saveScore(scoreReport, scores)).toThrow(
+        'Invalid number in scores',
+      );
     });
 
-    it('ต้องได้ "Invalid number in scores" ถ้ามีค่าใน scores น้อยกว่า -3', () => {
+    it('ต้องได้ Error "Invalid number in scores" ถ้ามีค่าใน scores น้อยกว่า -3', () => {
       // Arrange
       const scoreReport: ScoreReport = {
         score: 3,
         message: 'Triple Bogey',
       };
       const scores = [2.5, 2, 0, 1, -3.75];
-      const expectedResult = 'Invalid number in scores';
 
-      // Act
-      const result = saveScore(scoreReport, scores);
-
-      // Assert
-      expect(result).toBe(expectedResult);
+      // Act & Assert
+      expect(() => saveScore(scoreReport, scores)).toThrow(
+        'Invalid number in scores',
+      );
     });
   });
 });

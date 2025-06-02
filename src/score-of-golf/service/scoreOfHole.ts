@@ -1,19 +1,16 @@
 import { ScoreReport } from '../model/golf.model';
 
-export function scoreOfHole(
-  par: number,
-  strokes: number,
-): ScoreReport | string {
+export function scoreOfHole(par: number, strokes: number): ScoreReport | Error {
   if (strokes <= 0 || strokes % 1 !== 0) {
-    return 'Invalid number of strokes';
+    throw new Error('Invalid number of strokes');
   }
 
   if (par <= 0 || par % 1 !== 0) {
-    return 'Invalid number of par';
+    throw new Error('Invalid number of par');
   }
 
   if (par < 3) {
-    return 'Par must be at least 3';
+    throw new Error('Par must be at least 3');
   }
 
   const calScore = strokes - par;
@@ -23,7 +20,7 @@ export function scoreOfHole(
     (calScore < -2 && [3, 4, 5].includes(par)) ||
     (calScore < -3 && par >= 6)
   ) {
-    return 'Invalid number of score';
+    throw new Error('Invalid number of score');
   }
 
   switch (calScore) {
